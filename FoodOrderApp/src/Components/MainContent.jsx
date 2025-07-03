@@ -1,18 +1,23 @@
 import RestaurantCard from "./RestaurantCard";
-import resObjects from "../utils/resObjects";
 import Shimmer from "./Shimmer";
 import { useEffect, useState } from "react";
 
 const MainContent = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const onHandleChange = (e) => {
-    const filteredRestaurants = resObjects.filter(
+    const filteredRestaurants = restaurants.filter(
       (restaurant) => restaurant.info.avgRating > 4
     );
     setRestaurants(filteredRestaurants);
   };
-  console.log("filters >>> ", restaurants);
-
+  const onHandleSearch = () => {
+    const searchRestaurants = restaurants.filter((restaurant) =>
+      restaurant.info.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    console.log("searchRestaurants >>> ", searchRestaurants);
+    setRestaurants(searchRestaurants);
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -42,8 +47,12 @@ const MainContent = () => {
           type="text"
           placeholder="Search for food items..."
           className="search-input"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <button className="search-button">Search</button>
+        <button className="search-button" onClick={onHandleSearch}>
+          Search
+        </button>
         <div className="filter-container">
           <button className="filter-button" onClick={onHandleChange}>
             Filter
