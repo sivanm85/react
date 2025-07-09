@@ -1,6 +1,8 @@
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import UseOnlineStatus from "./UseOnlineStatus";
 
 const MainContent = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -34,6 +36,15 @@ const MainContent = () => {
     );
   };
 
+  const onlineStatus = UseOnlineStatus();
+  if (!onlineStatus) {
+    return (
+      <div className="offline-container">
+        <h2>You are currently offline</h2>
+        <p>Please check your internet connection.</p>
+      </div>
+    );
+  }
   if (restaurants.length === 0) {
     return <Shimmer />;
   }
@@ -61,7 +72,9 @@ const MainContent = () => {
       </div>
       <div className="res-container">
         {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          <Link to={"chennai/" + restaurant.info.id} key={restaurant.info.id}>
+            <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>

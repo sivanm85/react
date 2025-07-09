@@ -45,14 +45,16 @@
     justify-content: center;
     gap: 10px;
   }
-  .res-container {
+  .res-container,
+  .restaurant-menu {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2px;
     margin: 10px;
   }
-  .restaurant-card {
+  .restaurant-card,
+  .restaurant-menu {
     width: 200px;
     border: 1px solid #ccc;
     border-radius: 8px;
