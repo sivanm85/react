@@ -1,12 +1,16 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UseOnlineStatus from "./UseOnlineStatus";
+import UserContext from "../Utils/UserContext";
 
 const MainContent = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const { loggedInUser, setUserName } = useContext(UserContext);
+  const onlineStatus = UseOnlineStatus();
+
   const onHandleChange = (e) => {
     const filteredRestaurants = restaurants.filter(
       (restaurant) => restaurant.info.avgRating > 4
@@ -17,7 +21,6 @@ const MainContent = () => {
     const searchRestaurants = restaurants.filter((restaurant) =>
       restaurant.info.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    console.log("searchRestaurants >>> ", searchRestaurants);
     setRestaurants(searchRestaurants);
   };
   useEffect(() => {
@@ -31,12 +34,8 @@ const MainContent = () => {
     setRestaurants(
       json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
     );
-    console.log(
-      json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
-    );
   };
 
-  const onlineStatus = UseOnlineStatus();
   if (!onlineStatus) {
     return (
       <div className="offline-container">
@@ -45,35 +44,56 @@ const MainContent = () => {
       </div>
     );
   }
+  const PromotedRestaurantCard = withPromotedLabel(RestaurantCard);
+
   if (restaurants.length === 0) {
     return <Shimmer />;
   }
 
   return (
-    <div className="main-container">
-      <h2>Welcome to the Food Order App</h2>
-      <p>Order your favorite food online!</p>
-      <div className="search-container">
+    <div className="main-container flex flex-col items-center ">
+      <h2 className="my-2">Welcome to the Food Order App</h2>
+      <p className="my-2">Order your favorite food online!</p>
+      <div className="flex gap-2 m-2">
+        <label className="font-bold my-auto">UseContext value:</label>
+        <input
+          type="text"
+          className="border border-blue-500 px-4 py-2 rounded-md focus:outline-none"
+          value={loggedInUser}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+      </div>
+      <div className="flex gap-2">
         <input
           type="text"
           placeholder="Search for food items..."
-          className="search-input"
+          className="border border-blue-500 px-4 py-2 rounded-md focus:outline-none"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
-        <button className="search-button" onClick={onHandleSearch}>
+        <button
+          className="bg-blue-500 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-600"
+          onClick={onHandleSearch}
+        >
           Search
         </button>
-        <div className="filter-container">
+        <div className="bg-blue-500 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-600">
           <button className="filter-button" onClick={onHandleChange}>
             Filter
           </button>
         </div>
       </div>
-      <div className="res-container">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 ">
         {restaurants.map((restaurant) => (
           <Link to={"chennai/" + restaurant.info.id} key={restaurant.info.id}>
-            <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+            {restaurant.info.avgRating > 4.5 ? (
+              <PromotedRestaurantCard
+                key={restaurant.info.id}
+                resData={restaurant}
+              />
+            ) : (
+              <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>

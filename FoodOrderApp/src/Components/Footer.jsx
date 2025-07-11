@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className="footer bg-gray-500 text-white text-center p-4 mt-4">
       <p>&copy; 2023 Food Order App</p>
     </div>
   );
