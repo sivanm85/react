@@ -36,7 +36,7 @@ const Cart = () => {
                     "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" +
                     item.card.info.imageId
                   }
-                  className="w-24 mr-4 shadow-lg rounded-lg border-2 border-blue-500"
+                  className="w-24 mr-4 shadow-lg rounded-lg border-3 border-red-300"
                 />
                 {item.card.info.name} - ₹
                 {(item.card.info.price || item.card.info.defaultPrice) / 100}
