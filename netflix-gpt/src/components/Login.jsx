@@ -10,6 +10,7 @@ import { auth } from "../Utils/Firebase";
 import { addUser } from "../Utils/UserSlice";
 import { useDispatch } from "react-redux";
 import { USER_AVATAR } from "../Utils/Constant";
+import { BG_IMAGE_URL } from "../Utils/Constant";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -91,11 +92,7 @@ const Login = () => {
     <div>
       <Header />
       <div className="">
-        <img
-          className="w-full"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/a927b1ee-784d-494a-aa80-cf7a062d2523/web/IN-en-20250714-TRIFECTA-perspective_5acb7337-c372-45ec-ae12-ddb110e6ad78_large.jpg"
-          alt="Netflix Logo"
-        />
+        <img className="w-full" src={BG_IMAGE_URL} alt="Netflix Logo" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}

@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../Utils/Constant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTrailerVideo } from "../Utils/MoviesSlices"; // Assuming you have an action to add movie videos
 
 const useMovieTrailer = (movieId) => {
   const dispatch = useDispatch();
+  const trailerVideos = useSelector((state) => state.movies.trailerVideo);
+
   const getMovieVidoes = async () => {
     const response = await fetch(
       "https://api.themoviedb.org/3/movie/" +
@@ -23,7 +25,8 @@ const useMovieTrailer = (movieId) => {
     // Handle video data as needed
   };
   useEffect(() => {
-    getMovieVidoes();
+    // *** memoization *** means caching the result of a function call so that if it’s called again with the same inputs, it can return the cached result instead of recomputing it.
+    if (!trailerVideos) getMovieVidoes();
   }, []);
 };
 
