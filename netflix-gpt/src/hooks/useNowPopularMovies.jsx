@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNowPopularMovies } from "../Utils/MoviesSlices";
 import { API_OPTIONS } from "../Utils/Constant";
 
 const useNowPopularMovies = () => {
   const dispatch = useDispatch();
+  const nowPopularMovies = useSelector(
+    (state) => state.movies.nowPopularMovies
+  );
   const getNowPopularMovies = async () => {
     // Function to fetch now popular movies
     const response = await fetch(
@@ -16,7 +19,8 @@ const useNowPopularMovies = () => {
     dispatch(addNowPopularMovies(data.results));
   };
   useEffect(() => {
-    getNowPopularMovies();
+    // *** memoization *** means caching the result of a function call so that if it’s called again with the same inputs, it can return the cached result instead of recomputing it.
+    if (!nowPopularMovies) getNowPopularMovies();
   }, []);
 };
 export default useNowPopularMovies;
