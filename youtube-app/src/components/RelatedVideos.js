@@ -24,8 +24,8 @@ const RelatedVideos = ({ videoId }) => {
 
   return (
     <div className="w-full lg:w-96 ml-5 space-y-4">
-      {relatedVideos.map((video) => (
-        <Link to={"?v=" + video.id}>
+      {relatedVideos.map((video, id) => (
+        <Link to={"?v=" + video.id} key={id}>
           <div
             key={video.id.videoId}
             className="flex gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
