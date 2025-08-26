@@ -15,7 +15,9 @@ const VideoCard = ({ videoList }) => {
       <ul>
         <li className="py-1 font-bold text-sm w-60">{title}</li>
         <li className="text-gray-600 text-sm">{channelTitle}</li>
-        <li className="text-gray-500 text-sm">{statistics.viewCount} views</li>
+        <li className="text-gray-500 text-sm">
+          {statistics && statistics.viewCount} views
+        </li>
         <li className="text-gray-500 text-sm">{diffInDays} days ago</li>
       </ul>
     </div>
